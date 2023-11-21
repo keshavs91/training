@@ -19,24 +19,43 @@ void init_array(struct dynamic_array *da, int initial_size)
 
 void add(struct dynamic_array *da, int elem)
 {
-    printf("Adding an element. Current array size: %lu\n", sizeof(da->array));
+    printf("Added an element.");
     if (da->length == da->size)
     {
-        printf("resizing the array");
-        da->size *= 2;
+        printf("\nresizing the array");
+        int s = da->size;
+        // da->size *= 2;
         // realloc will
         // deallocate old memory, and
         // allocate new size memory and
         // copy the contents from the old ones as much as it can in the new memory
-        da->array = realloc(da->array, sizeof(int) * da->size);
+        // da->array = realloc(da->array, sizeof(int) * da->size);
+        int *temp = malloc(sizeof(int) * s);
+        for (int i = 0; i < da->length; i++)
+        {
+            temp[i] = da->array[i];
+        }
+
+        free(da->array);
+        da->array = malloc(sizeof(int) * s + 2);
+        da->size = s + 2;
+        da->length = 0;
+        // init_array(&da, da->size*2);
+
+        for (int i = 0; i < s; i++)
+        {
+            da->array[i] = temp[i];
+            da->length++;
+        }
+        printf("\nNew size: %d, new length: %d", da->size, da->length);
     }
     da->array[da->length++] = elem;
+    printf(" Current array length: %d\n", da->length);
 }
 
 void display(struct dynamic_array *da)
 {
-    printf("Size: %d", da->size);
-    printf("Length: %d", da->length);
+    printf("Size: %d, Length: %d", da->size, da->length);
     for (int i = 0; i < da->length; i++)
     {
         printf("\n%d: %d", i, da->array[i]);
