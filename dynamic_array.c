@@ -53,6 +53,42 @@ void add(struct dynamic_array *da, int elem)
     printf(" Current array length: %d\n", da->length);
 }
 
+void sort(struct dynamic_array *da)
+{
+    for (int i = 0; i < da->length; i++)
+    {
+        for (int j = 0; j < da->length; j++)
+        {
+            if (da->array[i] < da->array[j])
+            {
+                int temp = da->array[i];
+                da->array[i] = da->array[j];
+                da->array[j] = temp;
+            }
+        }
+    }
+}
+
+void remove_from(struct dynamic_array *da, int index)
+{
+    for (int i = index; i < da->length - 1; i++)
+    {
+        da->array[i] = da->array[i + 1];
+    }
+    da->length--;
+}
+
+void remove_elem(struct dynamic_array *da, int elem)
+{
+    for (int i = 0; i < da->length; i++)
+    {
+        if (da->array[i] == elem)
+        {
+            remove_from(da, i);
+        }
+    }
+}
+
 void display(struct dynamic_array *da)
 {
     printf("Size: %d, Length: %d", da->size, da->length);
@@ -75,6 +111,18 @@ int main()
     add(&da, 19);
     add(&da, 44);
 
+    display(&da);
+
+    printf("\n");
+    sort(&da);
+    display(&da);
+
+    printf("\n");
+    remove_from(&da, 2);
+    display(&da);
+
+    printf("\n");
+    remove_elem(&da, 21);
     display(&da);
 
     return 0;
